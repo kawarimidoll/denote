@@ -1,20 +1,12 @@
-import { parseYaml, range, serve, shuffle, tag as h } from "./deps.ts";
+import { parseYaml, serve, tag as h } from "./deps.ts";
 import { createDeployServer } from "./create_deploy_server.ts";
+import { getDenoteCss } from "./css_functions.ts";
 
 import {
-  CssObject,
   // disableFlag,
-  // ListGroup,
   ListItem,
   ProfileConfiguration,
 } from "./types.ts";
-
-const css = (cssObject: CssObject) =>
-  Object.entries(cssObject).map(([selector, attributes]) =>
-    selector + "{" +
-    Object.entries(attributes).map(([k, v]) => `${k}:${v}`).join(";") +
-    "}"
-  ).join("");
 
 const {
   name,
@@ -27,7 +19,7 @@ const {
   favicon,
   twitter: twitterInConfig,
   list: listInConfig,
-} = parseYaml(Deno.readTextFileSync("./config.yml")) as ProfileConfiguration;
+} = parseYaml(Deno.readTextFileSync("./denote.yml")) as ProfileConfiguration;
 
 // TODO: validate with custom schema
 if (!name || !projectName || !avatar || !listInConfig) {
@@ -41,6 +33,7 @@ if (list.length === 0) {
   throw new Error("list item is empty");
 }
 
+// TODO: add validation
 const icongram = (name: string, size = 20, attrs = {}) =>
   h("img", {
     src: `https://icongr.am/${
@@ -68,89 +61,6 @@ const renderListItem = (listItem: ListItem) => {
 };
 
 const rainCount = 30;
-const getRandomInt = (max: number) => Math.floor(Math.random() * max);
-
-const cssYml = `
-body:
-  display: flex
-  justify-content: center
-  margin: 0
-  text-align: center
-  scroll-behavior: smooth
-  font-family: "sans-serif,monospace"
-  background-color: "#111"
-  color: azure
-a:
-  # text-decoration: none
-  color: inherit
-h2:
-  margin: "-2rem auto 0"
-  padding-top: 4rem
-img:
-  display: block
-  margin: 0 auto
-"#main":
-  width: 100%
-  max-width: 800px
-  padding: 1rem 0.5rem
-.avatar:
-  border-radius: 50%
-  width: 260px
-  height: 260px
-  object-fit: cover
-.bio:
-  margin-bottom: 2rem
-.list-group:
-  max-width: 500px
-  margin: 0 auto
-  margin-bottom: 2rem
-.list-item:
-  border-radius: 5px
-  border: "thin solid azure"
-  margin: 0.5rem auto
-  padding: 0.5rem 2rem
-.nav-box:
-  background-color: "#111"
-  position: sticky
-  top: 0
-  border-bottom: "thin solid azure"
-.nav:
-  display: flex
-  justify-content: space-around
-  margin: 0 auto
-  padding: 0.5rem
-  width: 100%
-  max-width: 300px
-.nav>a:
-  display: block
-.inline:
-  display: inline
-.rain:
-  user-select: none
-  pointer-events: none
-  z-index: 1
-  position: fixed
-  width: 120%
-  height: 100%
-  display: flex
-  justify-content: space-around
-  transform: rotate(10deg)
-.drop:
-  width: 1px
-  height: 10vh
-  background: '#fff'
-  animation-name: falldown
-  animation-iteration-count: infinite
-  margin-top: '-20vh'
-  animation-timing-function: linear
-` + shuffle([...range(rainCount)]).map((num: number, idx) => `
-.drop:nth-child(${idx}):
-  animation-delay: ${num * 50}ms
-  animation-duration: ${getRandomInt(300) + 350}ms
-  opacity: 0.${getRandomInt(3) + 2}`).join("");
-
-const styles = css(parseYaml(cssYml) as CssObject) +
-  `@keyframes falldown{to{margin-top:120vh}}`;
 
 const htmlHead = h(
   "head",
@@ -169,7 +79,7 @@ const htmlHead = h(
   h("meta", { name: "twitter:card", content: "summary" }),
   twitter ? h("meta", { name: "twitter:site", content: twitter }) : "",
   h("title", title),
-  h("style", styles),
+  h("style", getDenoteCss(rainCount)),
   favicon ? h("link", { rel: "icon", href: favicon }) : "",
 );
 
