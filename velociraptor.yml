@@ -1,17 +1,17 @@
-# allow:
-  # - write=app.log
-  # - read
-  # - net
-  # - env
-
 scripts:
-  # main:
-  #   desc: Runs main script
-  #   cmd: main.ts
-  # 
-  # server:
-  #   desc: Starts local server
-  #   cmd: deployctl run --libs="" --watch --env=.env server.ts
+  build:
+    desc: Builds server file
+    cmd: cli.ts
+    allow:
+      - write
+      - read
+
+  serve:
+    desc: Starts local server
+    cmd: cli.ts --serve
+    allow:
+      - net
+      - read
 
   deps:
     desc: Update dependencies with ensuring pass tests
