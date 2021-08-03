@@ -1,14 +1,14 @@
 scripts:
   build:
     desc: Builds server file
-    cmd: cli.ts
+    cmd: cli.ts build
     allow:
       - write
       - read
 
   serve:
     desc: Starts local server
-    cmd: cli.ts --serve
+    cmd: cli.ts serve
     allow:
       - net
       - read

@@ -1,10 +1,12 @@
 import { parse } from "https://deno.land/std@0.103.0/flags/mod.ts";
+import { build } from "./subcommands/build.ts";
+import { serve } from "./subcommands/serve.ts";
 
 const NAME = "denote";
 const VERSION = "0.0.1";
 const versionInfo = `${NAME} ${VERSION}`;
 
-const help = `${versionInfo}
+const helpMsg = `${versionInfo}
 
   A minimal profile page generator for Deno Deploy.
 
@@ -20,14 +22,15 @@ Options:
   -h, --help     Shows the help message.
 `.trim();
 
-export function main(cliArgs: string[]) {
-  const args = parse(cliArgs, {
+export async function main(cliArgs: string[]) {
+  const { help, version, force, output, port, "_": args } = parse(cliArgs, {
     boolean: ["help", "version", "force"],
-    string: ["port"],
+    string: ["output", "port"],
     alias: {
       h: "help",
       v: "version",
       f: "force",
+      o: "output",
       p: "port",
     },
     default: {
@@ -35,41 +38,31 @@ export function main(cliArgs: string[]) {
     },
   });
 
-  if (args.version) {
+  if (version) {
     console.log(versionInfo);
     return 0;
   }
 
-  const build = (args: unknown) => {
-    console.log("build");
-    console.log(args);
-    return 0;
-  };
-  const serve = (args: unknown) => {
-    console.log("serve");
-    console.log(args);
-    return 0;
-  };
-
-  const subcommand = args._[0];
+  const [subcommand, source] = args;
+  // const source = `${filename}`;
 
   if (subcommand === "build" || subcommand === "b") {
-    return build(args);
+    return await build({ help, force, output, source });
   }
   if (subcommand === "serve" || subcommand === "s") {
-    return serve(args);
+    return await serve({ help, port, source });
   }
-  if (args.help) {
-    console.log(help);
+  if (help) {
+    console.log(helpMsg);
     return 0;
   }
-  console.error(help);
+  console.log(helpMsg);
   return 1;
 }
 
 if (import.meta.main) {
   try {
-    Deno.exit(main(Deno.args));
+    Deno.exit(await main(Deno.args));
   } catch (e) {
     console.error(e);
     Deno.exit(1);
