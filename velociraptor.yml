@@ -19,11 +19,11 @@ scripts:
 
   lint:
     desc: Runs lint
-    cmd: deno lint --ignore=cov_profile
+    cmd: deno lint --ignore=cov_profile,denote_server.js
 
   fmt:
     desc: Runs format
-    cmd: deno fmt --ignore=cov_profile
+    cmd: deno fmt --ignore=cov_profile,denote_server.js
 
   pre-commit:
     cmd: |
