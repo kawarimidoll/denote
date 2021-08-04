@@ -13,30 +13,36 @@ const helpMsg = `${versionInfo}
 Example:
   ${NAME} build ./denote.yml
 
+  The source file should be YAML or JSON format.
+
 Subcommands:
-  b, build       Builds the server file for Deno Deploy.
-  s, serve       Runs local server without creating any files.
+  b, build <source>  Builds the server file for Deno Deploy.
+  s, serve <source>  Runs local server without creating any files.
 
 Options:
-  -v, --version  Shows the version number.
-  -h, --help     Shows the help message.
+  -v, --version      Shows the version number.
+  -h, --help         Shows the help message.
 `.trim();
 
 export async function main(cliArgs: string[]) {
-  const { help, version, force, output, port, "_": args } = parse(cliArgs, {
-    boolean: ["help", "version", "force"],
-    string: ["output", "port"],
-    alias: {
-      h: "help",
-      v: "version",
-      f: "force",
-      o: "output",
-      p: "port",
+  const { help, version, force, output, port, watch, "_": args } = parse(
+    cliArgs,
+    {
+      boolean: ["help", "version", "force", "watch"],
+      string: ["output", "port"],
+      alias: {
+        h: "help",
+        v: "version",
+        f: "force",
+        o: "output",
+        w: "watch",
+        p: "port",
+      },
+      default: {
+        port: "8080",
+      },
     },
-    default: {
-      port: "8080",
-    },
-  });
+  );
 
   if (version) {
     console.log(versionInfo);
@@ -50,7 +56,7 @@ export async function main(cliArgs: string[]) {
     return await build({ help, force, output, source });
   }
   if (subcommand === "serve" || subcommand === "s") {
-    return await serve({ help, port, source });
+    return await serve({ help, port, source, watch });
   }
   if (help) {
     console.log(helpMsg);
