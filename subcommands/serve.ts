@@ -1,6 +1,5 @@
-import { serve as localhost } from "./../deps.ts";
+import { debounce, extname, serve as localhost } from "./../deps.ts";
 import { renderHtml } from "./../mod.ts";
-import { extname } from "https://deno.land/std@0.103.0/path/mod.ts";
 
 const usage = `denote serve <source>
 
@@ -18,6 +17,7 @@ Options:
 function error(str: string): void {
   console.error("\nError: " + str);
 }
+
 export async function serve({
   help,
   port,
@@ -86,20 +86,20 @@ export async function runServerWithWatching(
   runServer(source, port);
 
   const watcher = Deno.watchFs(source);
-  let debouncer: number | null = null;
-  console.log("Watching for changes...");
 
+  const rebuild = debounce(() => {
+    console.log("File change detected");
+    console.log("Rebuilding...");
+    html = renderHtml(source);
+    console.log("Local server is updated");
+    console.log("Watching for changes...");
+  }, interval);
+
+  console.log("Watching for changes...");
   for await (const event of watcher) {
     if (event.kind !== "modify") {
       continue;
     }
-    if (typeof debouncer == "number") clearTimeout(debouncer);
-    debouncer = setTimeout(() => {
-      console.log("File change detected");
-      console.log("Rebuilding...");
-      html = renderHtml(source);
-      console.log("Local server is updated");
-      console.log("Watching for changes...");
-    }, interval);
+    rebuild();
   }
 }
