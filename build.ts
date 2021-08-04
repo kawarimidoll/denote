@@ -1,6 +1,6 @@
-import { createDeployServer } from "./../create_deploy_server.ts";
-import { renderHtml } from "./../mod.ts";
-import { basename, extname } from "../deps.ts";
+import { createDeployServer } from "./create_deploy_server.ts";
+import { renderHtml } from "./render_html.ts";
+import { basename, extname } from "./deps.ts";
 
 const usage = `denote build <source>
 

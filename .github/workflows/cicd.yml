@@ -1,12 +1,15 @@
-name: ci
+name: cicd
 
 on: [push, pull_request]
 
 jobs:
-  test:
+  cicd:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
       - uses: denoland/setup-deno@v1
       - uses: jurassiscripts/setup-velociraptor@v1
-      - run: VR_HOOKS=false vr ci
+      - name: ci
+        run: VR_HOOKS=false vr ci
+      - name: cd
+        run: echo 'not implemented yet.'

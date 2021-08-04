@@ -1,6 +1,6 @@
 import { parse } from "https://deno.land/std@0.103.0/flags/mod.ts";
-import { build } from "./subcommands/build.ts";
-import { serve } from "./subcommands/serve.ts";
+import { build } from "./build.ts";
+import { serve } from "./serve.ts";
 
 const NAME = "denote";
 const VERSION = "0.0.1";
