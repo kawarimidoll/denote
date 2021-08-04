@@ -1,6 +1,6 @@
 import { createDeployServer } from "./../create_deploy_server.ts";
 import { renderHtml } from "./../mod.ts";
-import { basename, extname } from "https://deno.land/std@0.103.0/path/mod.ts";
+import { basename, extname } from "../deps.ts";
 
 const usage = `denote build <source>
 
@@ -9,8 +9,12 @@ const usage = `denote build <source>
 Example:
   denote build ./denote.yml
 
+  The output file is './<source without extension>_server.js' by default.
+  For example, when source is './denote.yml', output is './denote_server.js'
+
 Options:
-  -o, --output <filename> Specifies the output filename. Default is './denote_server.js'.
+  -o, --output <filename> Specifies the output filename.
+                          The output should be '.js' file.
   -f, --force             Overwrites the output file without confirmation.
   -h, --help              Shows the help message.
 `.trim();
@@ -18,7 +22,7 @@ Options:
 export async function build({
   help,
   force,
-  output = "./denote_server.js",
+  output,
   source,
 }: { help: string; force: boolean; output: string; source: string | number }) {
   console.log({
@@ -38,24 +42,37 @@ export async function build({
     console.error("source file is required");
     return 1;
   }
+  const ext = extname(`${source}`);
+  if (
+    typeof source !== "string" ||
+    ![".yaml", ".yml", ".json"].includes(ext)
+  ) {
+    console.log(usage);
+    console.error("invalid source file is passed");
+    return 1;
+  }
 
-  const html = renderHtml(`${source}`);
+  const html = renderHtml(source);
+  const outPath = output || basename(source).replace(ext, "_server.js");
+  if (![".js"].includes(extname(outPath))) {
+    console.log(usage);
+    console.error("invalid output file is passed");
+    return 1;
+  }
 
-  // const ext = extname(source);
-  // const outPath = source.replace(ext, "_server.js");
   try {
-    const stat = await Deno.lstat(output);
+    const stat = await Deno.lstat(outPath);
     if (stat.isDirectory) {
-      console.error(`Error: the output path ${output} is directory`);
+      console.error(`Error: the output path ${outPath} is directory`);
       return 1;
     }
     if (
       force || confirm(
-        `The output path ${output} already exists. Are you sure to overwrite this file?`,
+        `The output path ${outPath} already exists. Are you sure to overwrite this file?`,
       )
     ) {
-      Deno.writeTextFileSync(output, createDeployServer(html));
-      console.log(`Server file is successfully created: ${output}`);
+      Deno.writeTextFileSync(outPath, createDeployServer(html));
+      console.log(`Server file is successfully created: ${outPath}`);
       return 0;
     } else {
       console.warn("Aborting");
@@ -63,8 +80,8 @@ export async function build({
     }
   } catch (e) {
     if (e.name === "NotFound") {
-      Deno.writeTextFileSync(output, createDeployServer(html));
-      console.log(`Server file is successfully created: ${output}`);
+      Deno.writeTextFileSync(outPath, createDeployServer(html));
+      console.log(`Server file is successfully created: ${outPath}`);
       return 0;
     }
     console.error(e);

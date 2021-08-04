@@ -13,7 +13,7 @@ const helpMsg = `${versionInfo}
 Example:
   ${NAME} build ./denote.yml
 
-  The source file should be YAML or JSON format.
+  The source should be '.yml', '.yaml' or '.json' file.
 
 Subcommands:
   b, build <source>  Builds the server file for Deno Deploy.
@@ -50,7 +50,6 @@ export async function main(cliArgs: string[]) {
   }
 
   const [subcommand, source] = args;
-  // const source = `${filename}`;
 
   if (subcommand === "build" || subcommand === "b") {
     return await build({ help, force, output, source });
