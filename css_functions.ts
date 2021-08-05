@@ -37,12 +37,12 @@ img:
   width: 100%
   max-width: 800px
   padding: 1rem 0.5rem
-.avatar:
+.main-image:
   border-radius: 50%
   width: 260px
   height: 260px
   object-fit: cover
-.bio:
+.description:
   margin-bottom: 2rem
 .list-group:
   max-width: 500px

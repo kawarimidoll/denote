@@ -11,35 +11,32 @@ export function loadConfig(filename: string): ConfigObject {
   const {
     name,
     projectName,
-    title: titleInConfig,
-    bio,
+    title,
+    description,
     disable,
-    avatar,
+    mainImage,
     favicon,
-    twitter: twitterInConfig,
+    twitter,
     list,
   } = parseYaml(Deno.readTextFileSync(filename)) as ConfigObject;
 
-  // TODO: validate with custom schema
-  if (!name || !projectName || !avatar || !list) {
-    throw new Error("missing required data");
+  if (!name) {
+    throw new Error("name is required");
   }
 
-  const title = titleInConfig || `${name} profile`;
-  const twitter = (twitterInConfig || "").replace(/^([^@])/, "@$1");
-  if (Object.keys(list).length === 0) {
-    throw new Error("list item is empty");
+  if (!list || Object.keys(list).length === 0) {
+    throw new Error("list is empty");
   }
 
   return {
     name,
     projectName,
-    title,
-    bio,
+    title: title || `${name} | denote`,
+    description,
     disable,
-    avatar,
+    mainImage,
     favicon,
-    twitter,
+    twitter: (twitter || "").replace(/^([^@])/, "@$1"),
     list,
   };
 }
@@ -75,10 +72,10 @@ const rainCount = 30;
 
 export function renderHtmlHead(config: ConfigObject) {
   const {
-    name,
+    description,
     projectName,
     title,
-    avatar,
+    mainImage,
     favicon,
     twitter,
   } = config;
@@ -96,12 +93,19 @@ export function renderHtmlHead(config: ConfigObject) {
       content: `https://${projectName}.deno.dev`,
     }),
     h("meta", { property: "og:type", content: "website" }),
-    h("meta", { property: "og:title", content: title! }),
-    h("meta", { property: "og:description", content: `About ${name}` }),
-    h("meta", { property: "og:site_name", content: title! }),
-    h("meta", { property: "og:image", content: avatar }),
+    h("meta", { property: "og:title", content: title }),
+    description
+      ? h("meta", { property: "og:description", content: description })
+      : "",
+    h("meta", { property: "og:site_name", content: title }),
+    h("meta", { property: "og:image", content: mainImage }),
     h("meta", { name: "twitter:card", content: "summary" }),
-    twitter ? h("meta", { name: "twitter:site", content: twitter }) : "",
+    twitter
+      ? h("meta", {
+        name: "twitter:site",
+        content: twitter.replace(/^([^@])/, "@$1"),
+      })
+      : "",
     h("title", title),
     h("style", getDenoteCss(rainCount)),
     favicon ? h("link", { rel: "icon", href: favicon }) : "",
@@ -111,8 +115,8 @@ export function renderHtmlHead(config: ConfigObject) {
 export function renderHtmlBody(config: ConfigObject) {
   const {
     name,
-    bio,
-    avatar,
+    description,
+    mainImage,
     list: listInConfig,
   } = config;
   const list = Object.entries(listInConfig);
@@ -123,9 +127,9 @@ export function renderHtmlBody(config: ConfigObject) {
     h(
       "div",
       { id: "main" },
-      h("img", { alt: "avatar", class: "avatar", src: avatar }),
+      h("img", { alt: "main-image", class: "main-image", src: mainImage }),
       h("h1", name),
-      bio ? h("div", { class: "bio" }, bio) : "",
+      description ? h("div", { class: "description" }, description) : "",
       h("div", "Click to jump..."),
       h(
         "div",
