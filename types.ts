@@ -14,7 +14,7 @@ export type ListItem = {
   link?: string;
 };
 
-export type ProfileConfiguration = {
+export type ConfigObject = {
   name: string;
   projectName: string;
   disable?: disableFlag[];

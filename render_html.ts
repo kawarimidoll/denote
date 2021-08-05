@@ -2,12 +2,12 @@ import { parseYaml, tag as h } from "./deps.ts";
 import { getDenoteCss } from "./css_functions.ts";
 
 import {
+  ConfigObject,
   // disableFlag,
   ListItem,
-  ProfileConfiguration,
 } from "./types.ts";
 
-export function loadConfig(filename: string): ProfileConfiguration {
+export function loadConfig(filename: string): ConfigObject {
   const {
     name,
     projectName,
@@ -18,7 +18,7 @@ export function loadConfig(filename: string): ProfileConfiguration {
     favicon,
     twitter: twitterInConfig,
     list,
-  } = parseYaml(Deno.readTextFileSync(filename)) as ProfileConfiguration;
+  } = parseYaml(Deno.readTextFileSync(filename)) as ConfigObject;
 
   // TODO: validate with custom schema
   if (!name || !projectName || !avatar || !list) {
@@ -73,7 +73,7 @@ const renderListItem = (listItem: ListItem) => {
 
 const rainCount = 30;
 
-export function renderHtmlHead(config: ProfileConfiguration) {
+export function renderHtmlHead(config: ConfigObject) {
   const {
     name,
     projectName,
@@ -108,7 +108,7 @@ export function renderHtmlHead(config: ProfileConfiguration) {
   );
 }
 
-export function renderHtmlBody(config: ProfileConfiguration) {
+export function renderHtmlBody(config: ConfigObject) {
   const {
     name,
     bio,
