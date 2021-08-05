@@ -20,17 +20,27 @@ Options:
 `.trim();
 
 export async function build({
-  help,
+  debug,
   force,
+  help,
   output,
   source,
-}: { help: string; force: boolean; output: string; source: string | number }) {
-  console.log({
-    source,
-    help,
-    force,
-    output,
-  });
+}: {
+  debug: boolean;
+  force: boolean;
+  help: string;
+  output: string;
+  source: string | number;
+}) {
+  if (debug) {
+    console.log({
+      debug,
+      force,
+      help,
+      output,
+      source,
+    });
+  }
 
   if (help) {
     console.log(usage);

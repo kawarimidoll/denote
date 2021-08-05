@@ -25,14 +25,15 @@ Options:
 `.trim();
 
 export async function main(cliArgs: string[]) {
-  const { help, version, force, output, port, watch, "_": args } = parse(
+  const { help, version, force, output, port, watch, debug, "_": args } = parse(
     cliArgs,
     {
-      boolean: ["help", "version", "force", "watch"],
+      boolean: ["help", "version", "force", "watch", "debug"],
       string: ["output", "port"],
       alias: {
         h: "help",
         v: "version",
+        d: "debug",
         f: "force",
         o: "output",
         w: "watch",
@@ -52,10 +53,10 @@ export async function main(cliArgs: string[]) {
   const [subcommand, source] = args;
 
   if (subcommand === "build" || subcommand === "b") {
-    return await build({ help, force, output, source });
+    return await build({ help, force, output, source, debug });
   }
   if (subcommand === "serve" || subcommand === "s") {
-    return await serve({ help, port, source, watch });
+    return await serve({ help, port, source, watch, debug });
   }
   if (help) {
     console.log(helpMsg);

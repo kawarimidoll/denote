@@ -19,17 +19,27 @@ function error(str: string): void {
 }
 
 export async function serve({
+  debug,
   help,
   port,
   source,
   watch,
-}: { help: string; port: string; watch: boolean; source: string | number }) {
-  console.log({
-    source,
-    help,
-    port,
-    watch,
-  });
+}: {
+  debug: boolean;
+  help: string;
+  port: string;
+  source: string | number;
+  watch: boolean;
+}) {
+  if (debug) {
+    console.log({
+      debug,
+      help,
+      port,
+      source,
+      watch,
+    });
+  }
 
   if (help) {
     console.log(usage);
