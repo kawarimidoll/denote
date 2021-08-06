@@ -1,7 +1,8 @@
 import { debounce, extname, serve as localhost } from "./deps.ts";
 import { renderHtml } from "./render_html.ts";
 
-const usage = `denote serve <source>
+const usage = `
+denote serve <source>
 
   Runs local server without creating any files.
 
@@ -66,16 +67,20 @@ export async function serve({
   }
 
   if (watch) {
-    await runServerWithWatching(source, Number(port));
+    await runServerWithWatching(source, Number(port), { debug });
   } else {
-    await runServer(source, Number(port));
+    await runServer(source, Number(port), { debug });
   }
   return 0;
 }
 
 let html = "";
-async function runServer(source: string, port: number) {
-  html = renderHtml(source);
+async function runServer(
+  source: string,
+  port: number,
+  { debug = false } = {},
+) {
+  html = renderHtml(source, debug);
   const server = localhost({ port });
   console.log(
     `HTTP webserver running. Access it at: http://localhost:${port}/`,
@@ -91,16 +96,16 @@ async function runServer(source: string, port: number) {
 export async function runServerWithWatching(
   source: string,
   port: number,
-  { interval } = { interval: 300 },
+  { interval = 300, debug = false } = {},
 ) {
-  runServer(source, port);
+  runServer(source, port, { debug });
 
   const watcher = Deno.watchFs(source);
 
   const rebuild = debounce(() => {
     console.log("File change detected");
     console.log("Rebuilding...");
-    html = renderHtml(source);
+    html = renderHtml(source, debug);
     console.log("Local server is updated");
     console.log("Watching for changes...");
   }, interval);

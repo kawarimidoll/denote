@@ -2,7 +2,8 @@ import { createDeployServer } from "./create_deploy_server.ts";
 import { renderHtml } from "./render_html.ts";
 import { basename, extname } from "./deps.ts";
 
-const usage = `denote build <source>
+const usage = `
+denote build <source>
 
   Builds the server file for Deno Deploy.
 
@@ -62,7 +63,7 @@ export async function build({
     return 1;
   }
 
-  const html = renderHtml(source);
+  const html = renderHtml(source, debug);
   const outPath = output || basename(source).replace(ext, "_server.js");
   if (![".js"].includes(extname(outPath))) {
     console.log(usage);
