@@ -12,6 +12,7 @@ scripts:
     allow:
       - net
       - read
+    watch: true
 
   deps:
     desc: Update dependencies with ensuring pass tests
