@@ -16,11 +16,11 @@ export type ListItem = {
 
 export type ConfigObject = {
   name: string;
-  projectName: string;
+  project: string;
   disable: disableFlag[];
   title: string;
   description: string;
-  mainImage: string;
+  image: string;
   favicon: string;
   twitter: string;
   list: {
