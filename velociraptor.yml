@@ -1,4 +1,11 @@
 scripts:
+  init:
+    desc: Builds config file
+    cmd: denote.ts init
+    allow:
+      - write
+      - read
+
   build:
     desc: Builds server file
     cmd: denote.ts build
