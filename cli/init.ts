@@ -61,39 +61,51 @@ export async function init({
 name: ${name}
 #   The name shown on the top of the page.
 #   This value is required.
-#
+
 # project: ${name}_project
 #   The project name of the Deno Deploy(???.deno.dev).
 #   This is used in 'og:url'.
 #   When this is left blank, 'name' value is used.
-#
+
 # title: ${name}'s page
 #   The title of the page.
 #   This is also used in 'og:title' and 'og:site_name'.
 #   When this is left blank, '<name> | denote' is used.
-#
+
 # image: https://${name}.com/image.png
 #   The URL of the main image of the page.
 #   This is also used in 'og:image'.
-#
+
 # favicon: https://${name}.com/favicon.png
 #   The URL of the favicon of the page.
 #   When this is left blank, 'image' value is used.
-#
+
 # description: ${name}'s profile
 #   The comments shown under the page name.
 #   This is also used in 'og:description'.
 #   When this is left blank, the tag is just skipped.
-#
+
 # twitter: @${name}
 #   Your twitter username.
 #   This is used in 'twitter:site'.
 #   When this is left blank, the tag is just skipped.
-#
+
 list:
+#   The list of the group of the contents.
+#   This values is required.
+
   id-1:
+  #   The key of the group is used as the ID of html elements.
+  #   This must have 'icon' and 'items'.
+
     icon: fontawesome/font-awesome
+    #   The icon of this group.
+    #   The available icons are from icongr.am.
+
     items:
+    #   The list of the contents.
+    #   Each item can have 'icon', 'text', and 'link'.
+
       - icon: jam/info
         text: this is a text with an icon
       - text: this is a just text
@@ -102,6 +114,7 @@ list:
         link: https://github.com
       - text: this is a link to Twitter
         link: https://twitter.com
+
   id-2:
     icon: feather/anchor
     items:
