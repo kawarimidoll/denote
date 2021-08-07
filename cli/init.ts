@@ -1,4 +1,4 @@
-import { extname } from "./deps.ts";
+import { extname } from "./../deps.ts";
 
 const usage = `
 denote init <name>

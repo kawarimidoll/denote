@@ -1,4 +1,4 @@
-import { parseCli } from "./deps.ts";
+import { parseCli } from "./../deps.ts";
 import { build } from "./build.ts";
 import { init } from "./init.ts";
 import { serve } from "./serve.ts";

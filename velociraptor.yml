@@ -1,21 +1,21 @@
 scripts:
   init:
     desc: Builds config file
-    cmd: denote.ts init
+    cmd: cli/denote.ts init
     allow:
       - write
       - read
 
   build:
     desc: Builds server file
-    cmd: denote.ts build
+    cmd: cli/denote.ts build
     allow:
       - write
       - read
 
   serve:
     desc: Starts local server
-    cmd: denote.ts serve
+    cmd: cli/denote.ts serve
     allow:
       - net
       - read

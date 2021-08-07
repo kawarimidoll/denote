@@ -1,5 +1,5 @@
-import { debounce, extname, serve as localhost } from "./deps.ts";
-import { renderHtml } from "./render_html.ts";
+import { debounce, extname, serve as localhost } from "./../deps.ts";
+import { renderHtml } from "./../render_html.ts";
 
 const usage = `
 denote serve <source>
