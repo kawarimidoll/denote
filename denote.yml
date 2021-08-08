@@ -1,0 +1,45 @@
+name: denote
+description: A minimal profile page generator for Deno Deploy
+image: https://raw.githubusercontent.com/kawarimidoll/denote/main/logo.svg
+list:
+  overview:
+    icon: entypo/light-bulb
+    items:
+      - icon: entypo/news
+        text: List your profile...
+      - icon: entypo/code
+        text: List your skills...
+      - icon: entypo/cake
+        text: List your likes...
+      - icon: entypo/link
+        text: List your links...
+      - icon: entypo/emoji-flirt
+        text: And everything!
+  get-started:
+    icon: entypo/rocket
+    items:
+      - text: Quick start
+      - icon: material/numeric-1-circle
+        text: >
+          Run 'deno install --allow-read --allow-write
+          --allow-net https://deno.land/x/denote/denote.ts'
+      - icon: material/numeric-2-circle
+        text: Run 'denote --init' to create config file
+      - icon: material/numeric-3-circle
+        text: Edit config file as you like
+      - icon: material/numeric-4-circle
+        text: Run 'denote build' to generate server file
+      - icon: material/numeric-5-circle
+        text: Upload it to Deno Deploy
+  more:
+    icon: entypo/flower
+    items:
+      - icon: entypo/tools
+        text: Inspired by deploy_dir
+        link: https://deno.land/x/deploy_dir
+      - icon: entypo/folder-images
+        text: Icons are from icongr.am
+        link: https://icongr.am/
+      # - icon: entypo/github
+      #   text: GitHub Actions example
+      #   link: "https://github.com/kawarimidoll/denote/blob/main/.github/workflows/cicd.yml"
