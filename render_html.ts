@@ -106,7 +106,7 @@ export function renderHtmlHead(config: ConfigObject) {
     h("meta", { property: "og:type", content: "website" }),
     h("meta", { property: "og:title", content: title }),
     h("meta", { property: "og:description", content: description }),
-    h("meta", { property: "og:site_name", content: title }),
+    h("meta", { property: "og:site_name", content: "Denote" }),
     image ? h("meta", { property: "og:image", content: image }) : "",
     h("meta", { name: "twitter:card", content: "summary" }),
     twitter ? h("meta", { name: "twitter:site", content: twitter }) : "",

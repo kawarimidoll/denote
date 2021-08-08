@@ -11,7 +11,7 @@
 [![deno.land](https://img.shields.io/github/v/tag/kawarimidoll/denote?style=flat&logo=deno&label=deno.land&color=steelblue&sort=semver)](https://deno.land/x/denote)
 [![nest badge](https://nest.land/badge.svg)](https://nest.land/package/denote)
 
-A minimal profile page generator for Deno Deploy
+A minimal page generator for Deno Deploy that _denotes_ you
 
 [Demo](https://denote.deno.dev)
 
