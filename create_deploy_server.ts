@@ -53,5 +53,5 @@ addEventListener("fetch", (e) => {
     e.respondWith(new Response(gunzip(bytes), { headers }));
   }
   return;
-});`;
+});`.replace(/\s*\n\s*/mg, "");
 }
