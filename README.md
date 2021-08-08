@@ -1,7 +1,7 @@
 # denote
 
 <p align="center">
-<img alt="logo" src="denote_logo.svg" width="200" height="200">
+<img alt="logo" src="logo.svg" width="200" height="200">
 </p>
 
 [![cicd](https://github.com/kawarimidoll/denote/workflows/cicd/badge.svg)](.github/workflows/cicd.yml)
