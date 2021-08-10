@@ -4,15 +4,14 @@ import {
   serve,
   validateRequest,
 } from "https://deno.land/x/sift@0.3.5/mod.ts";
-// import { createHash } from "https://deno.land/std@0.103.0/hash/mod.ts";
+import { createHash } from "https://deno.land/std@0.103.0/hash/mod.ts";
 import { parse as parseYaml } from "https://deno.land/std@0.103.0/encoding/yaml.ts";
 import { renderHtml } from "./render_html.ts";
 import { ConfigObject } from "./types.ts";
 import { getDB, putDB } from "./textdb.ts";
 
 function applyHash(token: string) {
-  return `###${token}###`;
-  // return createHash("sha256").update(`${token}`).toString();
+  return createHash("sha256").update(`${token}`).toString();
 }
 
 serve({
