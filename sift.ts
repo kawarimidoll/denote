@@ -8,10 +8,28 @@ import { createHash } from "https://deno.land/std@0.103.0/hash/mod.ts";
 import { parse as parseYaml } from "https://deno.land/std@0.103.0/encoding/yaml.ts";
 import { renderHtml } from "./render_html.ts";
 import { ConfigObject } from "./types.ts";
-import { getDB, putDB } from "./textdb.ts";
+import { deleteItem, getItem, putItem, updateConfigPath } from "./dynamodb.ts";
 
 function applyHash(token: string) {
   return createHash("sha256").update(`${token}`).toString();
+}
+
+const NAME_REGEX = /[a-z][a-z0-9_-]{1,64}/;
+const TOKEN_REGEX = /[!-~]{8,128}/;
+function validateName(name: string) {
+  return NAME_REGEX.test(name);
+}
+function validateToken(token: string) {
+  return TOKEN_REGEX.test(token);
+}
+function validateConfigPath(path: string) {
+  try {
+    // simple URL validation
+    new URL(path);
+    return true;
+  } catch (_) {
+    return false;
+  }
 }
 
 serve({
@@ -37,34 +55,45 @@ serve({
 
     console.log(JSON.stringify(body));
 
-    const db = await getDB();
-    const name = `${body.name}`;
-    const hashedToken = applyHash(`${body.token}`);
-    const configPath = `${body.config_path}`;
-
-    if (!db) {
-      return json({ message: "failed to access database" }, { status: 500 });
-    }
-
     if (request.method === "GET") {
-      console.log(db);
       return json({
         message:
           "please access with POST to create new data, PUT to update the data or DELETE to delete the data.",
       });
     }
 
+    const name = `${body.name}`;
+    const token = `${body.token}`;
+    const configPath = `${body.config_path}`;
+
+    if (!validateName(name)) {
+      return json({
+        message: `invalid name. this must match with ${NAME_REGEX}`,
+      });
+    }
+    if (!validateToken(token)) {
+      return json({
+        message: `invalid token. this must match with ${TOKEN_REGEX}`,
+      });
+    }
+    if (!validateConfigPath(configPath)) {
+      return json({
+        message: "invalid config_path. this must be a valid URL.",
+      });
+    }
+    const hashedToken = applyHash(token);
+
     if (request.method === "POST") {
-      if (db[name]) {
+      const item = await getItem(name);
+      if (item) {
         return json({
           message:
             `the name '${name}' is already exist. if you want to update the data, please use PUT request.`,
         }, { status: 400 });
       }
 
-      db[name] = { hashedToken, configPath };
-
-      if (putDB(db)) {
+      const result = await putItem({ name, hashedToken, configPath });
+      if (result) {
         return json({
           message: "data saved! do not forget your token",
           ...body,
@@ -73,22 +102,22 @@ serve({
     }
 
     if (request.method === "PUT") {
-      if (!db[name]) {
+      const item = await getItem(name);
+      if (!item) {
         return json({
           message:
             `the name '${name}' is not exist. if you want to add a new data, please use POST request.`,
         }, { status: 400 });
       }
 
-      if (db[name].hashedToken !== hashedToken) {
+      if (item.hashedToken !== hashedToken) {
         return json({
           message: "invalid token.",
         }, { status: 400 });
       }
 
-      db[name].configPath = configPath;
-
-      if (putDB(db)) {
+      const result = await updateConfigPath(name, configPath);
+      if (result) {
         return json({
           message: "the data is updated successfully.",
           config_path: configPath,
@@ -97,21 +126,21 @@ serve({
     }
 
     if (request.method === "DELETE") {
-      if (!db[name]) {
+      const item = await getItem(name);
+      if (!item) {
         return json({
           message: `the name '${name}' is not exist.`,
         }, { status: 400 });
       }
 
-      if (db[name].hashedToken !== hashedToken) {
+      if (item.hashedToken !== hashedToken) {
         return json({
           message: "invalid token.",
         }, { status: 400 });
       }
 
-      delete db[name];
-
-      if (putDB(db)) {
+      const result = await deleteItem(name);
+      if (result) {
         return json({
           message: `the data of the name '${name}' is deleted successfully`,
         });
@@ -123,20 +152,14 @@ serve({
     const name = Array.isArray(params.slug) ? params.slug[0] : params.slug;
     console.log(name);
 
-    const db = await getDB();
+    const item = await getItem(name);
 
-    if (!db) {
-      return json({ message: "failed to access database" }, { status: 500 });
-    }
-
-    const data = db[name];
-
-    if (!data || !data.configPath) {
+    if (!(item?.configPath)) {
       return json({ message: "not found" }, { status: 404 });
     }
 
-    console.log({ configPath: data.configPath });
-    const response = await fetch(data.configPath);
+    console.log({ configPath: item.configPath });
+    const response = await fetch(item.configPath);
 
     if (response.ok) {
       const source = await response.text();

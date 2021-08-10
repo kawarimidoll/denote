@@ -4,7 +4,7 @@ import {
   GetItemCommand,
   PutItemCommand,
   UpdateItemCommand,
-} from "https://cdn.skypack.dev/@aws-sdk/client-dynamodb@3.22.0?dts";
+} from "https://cdn.skypack.dev/@aws-sdk/client-dynamodb@3.22.0?dts#=";
 
 const accessKeyId = Deno.env.get("AWS_ACCESS_KEY_ID");
 const secretAccessKey = Deno.env.get("AWS_SECRET_ACCESS_KEY");
@@ -74,7 +74,7 @@ export async function getItem(name: string) {
   }
   return null;
 }
-export async function updateItem(name: string, updateExpression: string) {
+export async function updateConfigPath(name: string, configPath: string) {
   try {
     const response = await client.send(
       new UpdateItemCommand({
@@ -82,7 +82,10 @@ export async function updateItem(name: string, updateExpression: string) {
         Key: {
           name: { S: name },
         },
-        UpdateExpression: updateExpression,
+        UpdateExpression: "SET configPath = :path",
+        ExpressionAttributeValues: {
+          ":path": { S: configPath },
+        },
       }),
     );
 
