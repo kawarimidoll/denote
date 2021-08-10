@@ -1,4 +1,8 @@
-import { parseYaml, range, shuffle } from "./deps.ts";
+// import { parseYaml, range, shuffle } from "./deps.ts";
+
+import shuffle from "https://deno.land/x/shuffle@v1.0.0/mod.ts";
+import { range } from "https://deno.land/x/it_range@v1.0.2/mod.ts";
+import { parse as parseYaml } from "https://deno.land/std@0.103.0/encoding/yaml.ts";
 import { CssObject } from "./types.ts";
 
 export function objectToCss(cssObject: CssObject) {

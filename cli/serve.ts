@@ -1,5 +1,6 @@
-import { debounce, extname, serve as localhost } from "./../deps.ts";
+import { debounce, extname, parseYaml, serve as localhost } from "./../deps.ts";
 import { renderHtml } from "./../render_html.ts";
+import { ConfigObject } from "./../types.ts";
 
 const usage = `
 denote serve <source>
@@ -80,7 +81,8 @@ async function runServer(
   port: number,
   { debug = false } = {},
 ) {
-  html = renderHtml(source, debug);
+  const config = parseYaml(Deno.readTextFileSync(source)) as ConfigObject;
+  html = renderHtml(config, debug);
   const server = localhost({ port });
   console.log(
     `HTTP webserver running. Access it at: http://localhost:${port}/`,
@@ -105,7 +107,8 @@ export async function runServerWithWatching(
   const rebuild = debounce(() => {
     console.log("File change detected");
     console.log("Rebuilding...");
-    html = renderHtml(source, debug);
+    const config = parseYaml(Deno.readTextFileSync(source)) as ConfigObject;
+    html = renderHtml(config, debug);
     console.log("Local server is updated");
     console.log("Watching for changes...");
   }, interval);

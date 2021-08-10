@@ -1,6 +1,7 @@
 import { createDeployServer } from "./../create_deploy_server.ts";
+import { basename, extname, parseYaml } from "./../deps.ts";
 import { renderHtml } from "./../render_html.ts";
-import { basename, extname } from "./../deps.ts";
+import { ConfigObject } from "./../types.ts";
 
 const usage = `
 denote build <source>
@@ -63,7 +64,8 @@ export async function build({
     return 1;
   }
 
-  const html = renderHtml(source, debug);
+  const config = parseYaml(Deno.readTextFileSync(source)) as ConfigObject;
+  const html = renderHtml(config, debug);
   const outPath = output || basename(source).replace(ext, "_server.js");
   if (![".js"].includes(extname(outPath))) {
     console.log(usage);

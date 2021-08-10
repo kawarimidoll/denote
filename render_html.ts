@@ -1,5 +1,13 @@
-import { AMP, GT, LT, mapValues, parseYaml, QUOT, tag as h } from "./deps.ts";
+// import { AMP, GT, LT, mapValues, QUOT, tag as h } from "./deps.ts";
 import { getDenoteCss } from "./css_functions.ts";
+import {
+  AMP,
+  GT,
+  LT,
+  QUOT,
+  tag as h,
+} from "https://deno.land/x/markup_tag@0.1.2/mod.ts";
+import { mapValues } from "https://deno.land/std@0.103.0/collections/mod.ts";
 
 import {
   ConfigObject,
@@ -19,9 +27,7 @@ export function sanitize(str: string): string {
     .replaceAll(`"`, QUOT);
 }
 
-export function loadConfig(filename: string): ConfigObject {
-  const config = parseYaml(Deno.readTextFileSync(filename)) as ConfigObject;
-
+export function loadConfig(config: ConfigObject): ConfigObject {
   if (!config.name) {
     throw new Error("name is required");
   }
@@ -173,8 +179,8 @@ export function renderHtmlBody(config: ConfigObject) {
   );
 }
 
-export function renderHtml(filename: string, debug = false) {
-  const config = loadConfig(filename);
+export function renderHtml(rawConfig: ConfigObject, debug = false) {
+  const config = loadConfig(rawConfig);
   if (debug) {
     console.log(config);
   }

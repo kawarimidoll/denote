@@ -5,6 +5,10 @@ import {
   validateRequest,
 } from "https://deno.land/x/sift@0.3.5/mod.ts";
 
+import { parse as parseYaml } from "https://deno.land/std@0.103.0/encoding/yaml.ts";
+import { renderHtml } from "./render_html.ts";
+import { ConfigObject } from "./types.ts";
+
 const TEXTDB = `https://textdb.dev/api/data/${Deno.env.get("TEXTDB_ENDPOINT")}`;
 
 interface DenoteSchema {
@@ -23,9 +27,7 @@ async function getDB(): Promise<DenoteSchema | null> {
     );
 
     if (response.ok) {
-      const json = await response.json();
-      console.log(json);
-      return json;
+      return await response.json();
     }
   } catch (error) {
     console.warn(error);
@@ -51,6 +53,10 @@ async function putDB(data: DenoteSchema) {
   }
 
   return false;
+}
+function applyHash(token: string) {
+  return `###${token}###`;
+  // return createHash("sha256").update(token).toString();
 }
 
 serve({
@@ -78,7 +84,7 @@ serve({
 
     const db = await getDB();
     const name = `${body.name}`;
-    const hashedToken = `###${body.token}###`;
+    const hashedToken = applyHash(`${body.token}`);
     const configPath = `${body.config_path}`;
 
     if (!db) {
@@ -115,6 +121,12 @@ serve({
         }, { status: 400 });
       }
 
+      if (db[name].hashedToken !== hashedToken) {
+        return json({
+          message: "invalid token.",
+        }, { status: 400 });
+      }
+
       db[name] = { hashedToken, configPath };
 
       if (putDB(db)) {
@@ -129,6 +141,12 @@ serve({
       if (!db[name]) {
         return json({
           message: "the name is not exist.",
+        }, { status: 400 });
+      }
+
+      if (db[name].hashedToken !== hashedToken) {
+        return json({
+          message: "invalid token.",
         }, { status: 400 });
       }
 
@@ -148,16 +166,29 @@ serve({
 
     const db = await getDB();
 
-    if (db) {
-      const data = db[name];
+    if (!db) {
+      return json({ message: "failed to access database" }, { status: 500 });
+    }
 
-      if (data) {
-        return json({ data });
-      }
+    const data = db[name];
+
+    if (!data || !data.configPath) {
       return json({ message: "not found" }, { status: 404 });
     }
 
-    return json({ message: "couldn't get db" }, { status: 500 });
+    const response = await fetch(data.configPath);
+
+    if (response.ok) {
+      const source = await response.text();
+      console.log({ source });
+      if (source) {
+        const config = parseYaml(source) as ConfigObject;
+        console.log(config);
+        const html = renderHtml(config);
+        return new Response(html, { headers: { "content-type": "text/html" } });
+      }
+    }
+    return json({ message: "something went wrong" }, { status: 500 });
   },
   404: () => new Response("not found"),
 });
