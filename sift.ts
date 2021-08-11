@@ -32,6 +32,21 @@ function validateConfig(config: string) {
     return false;
   }
 }
+function encodeConfig(rawConfig: string) {
+  // use parse and stringify to minify json
+  return encode(
+    gzip(
+      new TextEncoder().encode(
+        JSON.stringify(JSON.parse(rawConfig)),
+      ),
+    ),
+  );
+}
+function decodeConfig(compressedConfig: string) {
+  return JSON.parse(
+    new TextDecoder().decode(gunzip(decode(compressedConfig))),
+  ) as ConfigObject;
+}
 
 sift({
   "/": async (request) => {
@@ -82,7 +97,8 @@ sift({
     }
 
     const hashedToken = applyHash(name + token);
-    const config = JSON.stringify(JSON.parse(rawConfig));
+
+    const config = encodeConfig(rawConfig);
 
     if (request.method === "POST") {
       const item = await getItem(name);
@@ -136,7 +152,7 @@ sift({
     }
 
     try {
-      const rawConfig = JSON.parse(item.config) as ConfigObject;
+      const rawConfig = decodeConfig(item.config);
       console.log({ rawConfig });
       const html = renderHtml(rawConfig, true);
       return new Response(html, { headers: { "content-type": "text/html" } });
