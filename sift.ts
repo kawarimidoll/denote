@@ -48,7 +48,7 @@ sift({
       return json({ error: error.message }, { status: error.status });
     }
     if (body == null) {
-      return json({ message: "something went wrong" }, { status: 500 });
+      return json({ message: "could not process the data." }, { status: 400 });
     }
 
     console.log(JSON.stringify(body));
@@ -96,7 +96,7 @@ sift({
       const result = await putItem({ name, hashedToken, config });
       if (result) {
         return json({
-          message: "data is saved successfully. do not forget your token",
+          message: "data is saved successfully. do not forget your token.",
         });
       }
     }
@@ -119,20 +119,20 @@ sift({
       const result = await deleteItem(name);
       if (result) {
         return json({
-          message: `the data of the name '${name}' is deleted successfully`,
+          message: `the data of the name '${name}' is deleted successfully.`,
         });
       }
     }
-    return json({ message: "something went wrong" }, { status: 500 });
+    return json({ message: "something went wrong." }, { status: 500 });
   },
-  "/:slug": async (_: Request, params: PathParams) => {
+  "/:slug": async (_, params) => {
     const name = Array.isArray(params.slug) ? params.slug[0] : params.slug;
     console.log(name);
 
     const item = await getItem(name);
 
     if (!(item?.config)) {
-      return json({ message: "not found" }, { status: 404 });
+      return json({ message: "not found." }, { status: 404 });
     }
 
     try {
@@ -143,7 +143,7 @@ sift({
     } catch (error) {
       console.warn(error);
     }
-    return json({ message: "something went wrong" }, { status: 500 });
+    return json({ message: "something went wrong." }, { status: 500 });
   },
-  404: () => json({ message: "not found" }, { status: 404 }),
+  404: () => json({ message: "not found." }, { status: 404 }),
 });
