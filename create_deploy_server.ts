@@ -18,7 +18,7 @@ export function createDeployServer(
   const cacheControl = opts.cache || "private";
 
   return `import { decode } from "https://deno.land/std@0.103.0/encoding/base64.ts";
-import { gunzip } from "https://raw.githubusercontent.com/kt3k/compress/bbe0a818d2acd399350b30036ff8772354b1c2df/gzip/gzip.ts";
+import { gunzip } from "https://deno.land/x/compress@v0.3.8/gzip/gzip.ts";
 const pageData = [decode("${base64}"), '"${etag}"', "${cacheControl}"];
 addEventListener("fetch", (e) => {
   const { pathname, origin } = new URL(e.request.url);

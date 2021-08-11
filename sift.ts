@@ -1,10 +1,13 @@
 import {
+  createHash,
+  decode,
+  encode,
+  gunzip,
+  gzip,
   json,
-  PathParams,
-  serve,
+  sift,
   validateRequest,
-} from "https://deno.land/x/sift@0.3.5/mod.ts";
-import { createHash } from "https://deno.land/std@0.103.0/hash/mod.ts";
+} from "./deps.ts";
 import { renderHtml } from "./render_html.ts";
 import { ConfigObject } from "./types.ts";
 import { deleteItem, getItem, putItem } from "./dynamodb.ts";
@@ -30,7 +33,7 @@ function validateConfig(config: string) {
   }
 }
 
-serve({
+sift({
   "/": async (request) => {
     const { error, body } = await validateRequest(request, {
       GET: {},
