@@ -3,7 +3,6 @@ import {
   DynamoDBClient,
   GetItemCommand,
   PutItemCommand,
-  UpdateItemCommand,
 } from "https://cdn.skypack.dev/@aws-sdk/client-dynamodb@3.22.0?dts#=";
 
 const accessKeyId = Deno.env.get("AWS_ACCESS_KEY_ID");
@@ -21,7 +20,7 @@ const tableName = "Denote";
 export interface DenoteSchema {
   name: string;
   hashedToken: string;
-  configPath: string;
+  config: string;
 }
 
 export async function putItem(data: DenoteSchema) {
@@ -33,7 +32,7 @@ export async function putItem(data: DenoteSchema) {
           // Here 'S' implies that the value is of type string
           name: { S: data.name },
           hashedToken: { S: data.hashedToken },
-          configPath: { S: data.configPath },
+          config: { S: data.config },
         },
       }),
     );
@@ -66,7 +65,7 @@ export async function getItem(name: string) {
       return {
         name: Item.name.S,
         hashedToken: Item.hashedToken.S,
-        configPath: Item.configPath.S,
+        config: Item.config.S,
       };
     }
   } catch (error) {
@@ -74,30 +73,7 @@ export async function getItem(name: string) {
   }
   return null;
 }
-export async function updateConfigPath(name: string, configPath: string) {
-  try {
-    const response = await client.send(
-      new UpdateItemCommand({
-        TableName: tableName,
-        Key: {
-          name: { S: name },
-        },
-        UpdateExpression: "SET configPath = :path",
-        ExpressionAttributeValues: {
-          ":path": { S: configPath },
-        },
-      }),
-    );
 
-    console.log(response);
-    const { $metadata: { httpStatusCode } } = response;
-
-    return httpStatusCode === 200;
-  } catch (error) {
-    console.log(error);
-  }
-  return false;
-}
 export async function deleteItem(name: string) {
   try {
     const response = await client.send(

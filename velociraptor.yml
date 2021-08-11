@@ -21,9 +21,12 @@ scripts:
       - read
     watch: true
 
+  start:
+    cmd: deployctl run --no-check --env=.env --watch ./sift.ts
+
   deps:
     desc: Update dependencies with ensuring pass tests
-    cmd: udd deps.ts --test="vr test"
+    cmd: udd *.ts --test="vr test"
 
   lint:
     desc: Runs lint
