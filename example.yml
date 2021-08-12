@@ -47,9 +47,9 @@ list:
       - text: this is a link to Twitter
         link: https://twitter.com
 
-    id-2:
-      icon: feather/anchor
-      items:
-        - icon: clarity/block
-          text: this is the second block
-        - icon: simple/deno
+  id-2:
+    icon: feather/anchor
+    items:
+      - icon: clarity/block
+        text: this is the second block
+      - icon: simple/deno

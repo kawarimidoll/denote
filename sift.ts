@@ -113,6 +113,8 @@ sift({
       if (result) {
         return json({
           message: "data is saved successfully. do not forget your token.",
+          name,
+          token,
         });
       }
     }
