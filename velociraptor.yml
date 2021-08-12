@@ -5,13 +5,7 @@ scripts:
     allow:
       - write
       - read
-
-  build:
-    desc: Builds server file
-    cmd: cli/denote.ts build
-    allow:
-      - write
-      - read
+      - net
 
   serve:
     desc: Starts local server
@@ -20,6 +14,20 @@ scripts:
       - net
       - read
     watch: true
+
+  register:
+    desc: Publishes page
+    cmd: cli/denote.ts register
+    allow:
+      - net
+      - read
+
+  unregister:
+    desc: Removes page
+    cmd: cli/denote.ts unregister
+    allow:
+      - net
+      - read
 
   start:
     cmd: deployctl run --no-check --env=.env --watch ./sift.ts
