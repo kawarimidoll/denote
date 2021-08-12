@@ -1,6 +1,8 @@
 import { parseCli } from "./../deps.ts";
 import { init } from "./init.ts";
 import { serve } from "./serve.ts";
+import { register } from "./register.ts";
+import { unregister } from "./unregister.ts";
 
 const NAME = "denote";
 const VERSION = "0.0.1";
@@ -12,12 +14,14 @@ ${versionInfo}
   A minimal profile page generator for Deno Deploy.
 
 Subcommands:
-  i, init  <filename>  Generates sample config file with given name.
-  s, serve <filename>  Runs local server with given config file.
+  i, init  <filename>     Generates sample config file with given name.
+  s, serve <filename>     Runs local server with given config file.
+  r, register <filename>  Publish the page on denote.deno.dev with given config file.
+  u, unregister           Remove the page from denote.deno.dev.
 
 Options:
-  -v, --version        Shows the version number.
-  -h, --help           Shows the help message.
+  -v, --version           Shows the version number.
+  -h, --help              Shows the help message.
 `.trim();
 
 export async function main(cliArgs: string[]) {
@@ -26,7 +30,9 @@ export async function main(cliArgs: string[]) {
     debug,
     force,
     help,
+    name,
     port,
+    token,
     version,
     watch,
   } = parseCli(
@@ -40,14 +46,18 @@ export async function main(cliArgs: string[]) {
         "watch",
       ],
       string: [
+        "name",
         "output",
         "port",
+        "token",
       ],
       alias: {
         d: "debug",
         f: "force",
         h: "help",
+        n: "name",
         p: "port",
+        t: "token",
         v: "version",
         w: "watch",
       },
@@ -79,6 +89,23 @@ export async function main(cliArgs: string[]) {
       port,
       filename,
       watch,
+    });
+  }
+  if (subcommand === "register" || subcommand === "r") {
+    return await register({
+      debug,
+      help,
+      name,
+      token,
+      filename,
+    });
+  }
+  if (subcommand === "unregister" || subcommand === "u") {
+    return await unregister({
+      debug,
+      help,
+      name,
+      token,
     });
   }
   if (help) {

@@ -29,8 +29,8 @@ list:
         text: Edit the config file as you like
       - icon: material/numeric-4-circle
         text: >
-          Run 'denote register denote.yml --name=your-name
-          --token=your-token' to register the config file
+          Run 'denote register denote.yml --name your-name
+          --token your-token' to register the config file
       - icon: material/numeric-5-circle
         text: Visit https://denote.deno.dev/[your-name]
   more:

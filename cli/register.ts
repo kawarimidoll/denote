@@ -6,7 +6,7 @@ denote register <filename>
   Publish the page on denote.deno.dev with given config file.
 
 Example:
-  denote register profile.yml --name=your-name --token=your-token
+  denote register profile.yml --name your-name --token your-token
 
   The input should be YAML or JSON file.
   You can use URL when the config file is published on the web.
@@ -78,6 +78,13 @@ export async function register({
     error("invalid file is passed as an argument");
     return 1;
   }
+
+  if (!name || !token) {
+    console.log(usage);
+    error("name and token are both required");
+    return 1;
+  }
+  console.log({ name, token });
 
   try {
     const contents = isURL(filename)

@@ -4,7 +4,7 @@ denote unregister
   Remove the page from denote.deno.dev.
 
 Example:
-  denote unregister --name=your-name --token=your-token
+  denote unregister --name your-name --token your-token
 
   'name' and 'token' options are both required.
 
@@ -41,6 +41,12 @@ export async function unregister({
   if (help) {
     console.log(usage);
     return 0;
+  }
+
+  if (!name || !token) {
+    console.log(usage);
+    error("name and token are both required");
+    return 1;
   }
 
   try {
