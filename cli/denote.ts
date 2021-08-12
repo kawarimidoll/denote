@@ -1,5 +1,4 @@
 import { parseCli } from "./../deps.ts";
-import { build } from "./build.ts";
 import { init } from "./init.ts";
 import { serve } from "./serve.ts";
 
@@ -12,19 +11,13 @@ ${versionInfo}
 
   A minimal profile page generator for Deno Deploy.
 
-Example:
-  denote build ./denote.yml
-
-  The source should be '.yml' file.
-
 Subcommands:
-  i, init <name>     Generates sample 'denote.yml' file with given name.
-  b, build <source>  Builds the server file for Deno Deploy.
-  s, serve <source>  Runs local server without creating any files.
+  i, init  <filename>  Generates sample config file with given name.
+  s, serve <filename>  Runs local server with given config file.
 
 Options:
-  -v, --version      Shows the version number.
-  -h, --help         Shows the help message.
+  -v, --version        Shows the version number.
+  -h, --help           Shows the help message.
 `.trim();
 
 export async function main(cliArgs: string[]) {
@@ -33,7 +26,6 @@ export async function main(cliArgs: string[]) {
     debug,
     force,
     help,
-    output,
     port,
     version,
     watch,
@@ -55,7 +47,6 @@ export async function main(cliArgs: string[]) {
         d: "debug",
         f: "force",
         h: "help",
-        o: "output",
         p: "port",
         v: "version",
         w: "watch",
@@ -71,24 +62,14 @@ export async function main(cliArgs: string[]) {
     return 0;
   }
 
-  const [subcommand, source] = args;
+  const [subcommand, filename] = args.map((arg) => `${arg}`);
 
   if (subcommand === "init" || subcommand === "i") {
     return await init({
       debug,
       force,
       help,
-      output,
-      name: source,
-    });
-  }
-  if (subcommand === "build" || subcommand === "b") {
-    return await build({
-      debug,
-      force,
-      help,
-      output,
-      source,
+      filename,
     });
   }
   if (subcommand === "serve" || subcommand === "s") {
@@ -96,7 +77,7 @@ export async function main(cliArgs: string[]) {
       debug,
       help,
       port,
-      source,
+      filename,
       watch,
     });
   }
