@@ -1,8 +1,4 @@
-// import { parseYaml, range, shuffle } from "./deps.ts";
-
-import shuffle from "https://deno.land/x/shuffle@v1.0.0/mod.ts";
-import { range } from "https://deno.land/x/it_range@v1.0.2/mod.ts";
-import { parse as parseYaml } from "https://deno.land/std@0.103.0/encoding/yaml.ts";
+import { parseYaml, range, shuffle } from "./deps.ts";
 import { CssObject } from "./types.ts";
 
 export function objectToCss(cssObject: CssObject) {
@@ -29,11 +25,12 @@ body:
   background-color: "#111"
   color: azure
 a:
-  # text-decoration: none
   color: inherit
 h2:
   margin: "-2rem auto 0"
   padding-top: 4rem
+footer:
+  font-size: smaller
 img:
   display: block
   margin: 0 auto
@@ -54,14 +51,14 @@ img:
   margin-bottom: 2rem
 .list-item:
   border-radius: 5px
-  border: "thin solid azure"
+  border: thin solid azure
   margin: 0.5rem auto
   padding: 0.5rem 2rem
 .nav-box:
   background-color: "#111"
   position: sticky
   top: 0
-  border-bottom: "thin solid azure"
+  border-bottom: thin solid azure
 .nav:
   display: flex
   justify-content: space-around
@@ -71,8 +68,9 @@ img:
   max-width: 300px
 .nav>a:
   display: block
-.inline:
-  display: inline
+.ex-link:
+  display: inline-block
+  margin: 0 .25rem
 .rain:
   user-select: none
   pointer-events: none
@@ -86,10 +84,10 @@ img:
 .drop:
   width: 1px
   height: 10vh
-  background: '#fff'
-  animation-name: falldown
+  background: white
+  animation-name: fall_down
   animation-iteration-count: infinite
-  margin-top: '-20vh'
+  margin-top: "-20vh"
   animation-timing-function: linear
 ` + shuffle([...range(rainCount)]).map((num, idx) => `
 .drop:nth-child(${idx}):
@@ -98,5 +96,5 @@ img:
   opacity: 0.${getRandomInt(3) + 2}`).join("");
 
   return objectToCss(parseYaml(cssYml) as CssObject) +
-    `@keyframes falldown{to{margin-top:120vh}}`;
+    `@keyframes fall_down{to{margin-top:120vh}}`;
 }

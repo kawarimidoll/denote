@@ -153,6 +153,7 @@ sift({
 
     try {
       const rawConfig = decodeConfig(item.config);
+      rawConfig.name = name;
       console.log({ rawConfig });
       const html = renderHtml(rawConfig, true);
       return new Response(html, { headers: { "content-type": "text/html" } });
