@@ -1,5 +1,3 @@
-import { extname, parseYaml } from "./../deps.ts";
-
 const usage = `
 denote unregister
 
