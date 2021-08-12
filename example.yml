@@ -1,0 +1,55 @@
+# name: deno
+#   The name shown on the top of the page.
+#   When this is left blank, your page path (denote.deno.dev/???) is used.
+#   This is also used in the title of html.
+
+# image: https://deno.land/logo.svg
+#   The URL of the main image of the page.
+#   This is also used in 'og:image'.
+#   When this is left blank, it is just skipped.
+
+# favicon: https://deno.land/favicon.svg
+#   The URL of the favicon of the page.
+#   When this is left blank, Denote logo is used.
+
+# description: A secure JavaScript and TypeScript runtime
+#   The comments shown under the page name.
+#   This is also used in 'og:description'.
+#   When this is left blank, it is just skipped.
+
+# twitter: @deno_land
+#   Your twitter username.
+#   This is used in 'twitter:site'.
+#   When this is left blank, it is just skipped.
+
+list:
+  #   The list of the group of the contents.
+  #   This values is required.
+
+  id-1:
+    #   The key of the group is used as the ID of html elements.
+    #   This must have 'icon' and 'items'.
+
+    icon: fontawesome/font-awesome
+      #   The icon of this group.
+      #   The available icons are from icongr.am.
+
+    items:
+      #   The list of the contents.
+      #   Each item can have 'icon', 'text', and 'link'.
+
+      - icon: jam/info
+        text: this is a text with an icon
+      - text: this is a just text
+      - icon: octicons/octoface
+        text: this is a link to GitHub
+        link: https://github.com
+      - text: this is a link to Twitter
+        link: https://twitter.com
+
+    id-2:
+      icon: feather/anchor
+      items:
+        - icon: clarity/block
+          text: this is the second block
+        - icon: simple/deno
