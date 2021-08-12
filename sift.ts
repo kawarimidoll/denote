@@ -71,7 +71,7 @@ sift({
     if (request.method === "GET") {
       return json({
         message:
-          "please access with POST to create new data or DELETE to delete the data.",
+          "please access with POST to create new data or DELETE to delete the data. https://github.com/kawarimidoll/denote",
       });
     }
 
