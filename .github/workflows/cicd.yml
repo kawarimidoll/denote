@@ -12,4 +12,4 @@ jobs:
       - name: ci
         run: VR_HOOKS=false vr ci
       - name: cd
-        run: echo 'not implemented yet.'
+        run: VR_HOOKS=false vr cd --token '${{ secret.DENOTE_TOKEN }}'

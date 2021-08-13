@@ -6,6 +6,7 @@ scripts:
       - write
       - read
       - net
+    noCheck: true
 
   serve:
     desc: Starts local server
@@ -14,6 +15,7 @@ scripts:
       - net
       - read
     watch: true
+    noCheck: true
 
   register:
     desc: Publishes page
@@ -21,6 +23,7 @@ scripts:
     allow:
       - net
       - read
+    noCheck: true
 
   unregister:
     desc: Removes page
@@ -28,6 +31,7 @@ scripts:
     allow:
       - net
       - read
+    noCheck: true
 
   start:
     cmd: deployctl run --no-check --env=.env --watch ./server.ts
@@ -71,6 +75,11 @@ scripts:
       - vr lint
       - vr fmt --check
       - vr test
+
+  cd:
+    desc: Publishes latest denote.yml
+    cmd:
+      - vr register denote.yml --name denote
 
   commitlint:
     # dependencies: commitlint and @commitlint/config-conventional
