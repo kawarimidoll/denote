@@ -159,7 +159,7 @@ export function renderHtmlBody(config: ConfigObject) {
       h(
         "footer",
         "Powered by ",
-        h("a", { href: "https://deno.com/deploy" }, "Deno Deploy"),
+        h("a", { href: "https://github.com/kawarimidoll/denote" }, "Denote"),
         exLink,
       ),
     ),

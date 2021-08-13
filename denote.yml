@@ -36,9 +36,12 @@ list:
   more:
     icon: entypo/flower
     items:
+      - icon: entypo/power-plug
+        text: Hosting on Deno Deploy
+        link: https://deno.com/deploy
       - icon: entypo/github
-        text: GitHub repository
-        link: https://github.com/kawarimidoll/denote
+        text: More useful with GitHub Actions
+        link: https://github.com/kawarimidoll/denote/blob/main/.github/workflows/cicd.yml
       - icon: entypo/folder-images
-        text: Icons are from icongr.am
+        text: Icons by icongr.am
         link: https://icongr.am/
