@@ -4,13 +4,15 @@
 <img alt="logo" src="logo.svg" width="200" height="200">
 </p>
 
-[![cicd](https://github.com/kawarimidoll/denote/workflows/cicd/badge.svg)](.github/workflows/cicd.yml)
-[![deno.land](https://img.shields.io/badge/deno-%5E1.0.0-green?logo=deno)](https://deno.land)
-[![vr scripts](https://badges.velociraptor.run/flat.svg)](https://velociraptor.run)
-[![LICENSE](https://img.shields.io/badge/license-MIT-brightgreen)](LICENSE)
-[![deno.land](https://img.shields.io/github/v/tag/kawarimidoll/denote?style=flat&logo=deno&label=deno.land&color=steelblue&sort=semver)](https://deno.land/x/denote)
+<p align="center">
+<a href=".github/workflows/cicd.yml"><img alt="ci/cd" src="https://github.com/kawarimidoll/denote/workflows/cicd/badge.svg"></a>
+<a href="https://deno.land"><img alt="deno.land" src="https://img.shields.io/badge/deno-%5E1.0.0-green?logo=deno"></a>
+<a href="https://velociraptor.run"><img alt="velociraptor" src="https://badges.velociraptor.run/flat.svg"></a>
+<a href="LICENSE"><img alt="LICENSE" src="https://img.shields.io/badge/license-MIT-brightgreen"></a>
+<a href="https://deno.land/x/denote"><img alt="deno.land" src="https://img.shields.io/github/v/tag/kawarimidoll/denote?style=flat&logo=deno&label=deno.land&color=steelblue&sort=semver"></a>
+<!-- <a href="https://nest.land/package/denote"><img alt="nest badge" src="https://nest.land/badge.svg"></a> -->
+</p>
 
-<!-- [![nest badge](https://nest.land/badge.svg)](https://nest.land/package/denote) -->
 
 A minimal page generator for Deno Deploy that _denotes_ you
 
