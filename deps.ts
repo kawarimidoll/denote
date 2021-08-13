@@ -7,7 +7,6 @@ export {
   decode,
   encode,
 } from "https://deno.land/std@0.103.0/encoding/base64.ts";
-export { serve } from "https://deno.land/std@0.103.0/http/server.ts";
 export {
   parse as parseYaml,
   stringify as stringifyYaml,

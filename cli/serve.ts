@@ -1,4 +1,4 @@
-import { debounce, extname, parseYaml, serve as localhost } from "./../deps.ts";
+import { debounce, extname, parseYaml } from "./../deps.ts";
 import { renderHtml } from "./../render_html.ts";
 import { ConfigObject } from "./../types.ts";
 
@@ -82,13 +82,16 @@ async function runServer(
 ) {
   const config = parseYaml(Deno.readTextFileSync(source)) as ConfigObject;
   html = renderHtml(config, debug);
-  const server = localhost({ port });
   console.log(
     `HTTP webserver running. Access it at: http://localhost:${port}/`,
   );
-  for await (const request of server) {
-    const headers = new Headers({ "content-type": "text/html" });
-    request.respond({ status: 200, body: html, headers });
+  const headers = new Headers({ "content-type": "text/html" });
+  for await (const conn of Deno.listen({ port })) {
+    (async () => {
+      for await (const { respondWith } of Deno.serveHttp(conn)) {
+        respondWith(new Response(html, { status: 200, headers }));
+      }
+    })();
   }
 }
 
