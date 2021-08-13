@@ -1,7 +1,8 @@
 import { parseCli } from "./../deps.ts";
-import { build } from "./build.ts";
 import { init } from "./init.ts";
 import { serve } from "./serve.ts";
+import { register } from "./register.ts";
+import { unregister } from "./unregister.ts";
 
 const NAME = "denote";
 const VERSION = "0.0.1";
@@ -12,19 +13,15 @@ ${versionInfo}
 
   A minimal profile page generator for Deno Deploy.
 
-Example:
-  denote build ./denote.yml
-
-  The source should be '.yml' file.
-
 Subcommands:
-  i, init <name>     Generates sample 'denote.yml' file with given name.
-  b, build <source>  Builds the server file for Deno Deploy.
-  s, serve <source>  Runs local server without creating any files.
+  i, init  <filename>     Generates sample config file with given name.
+  s, serve <filename>     Runs local server with given config file.
+  r, register <filename>  Publish the page on denote.deno.dev with given config file.
+  u, unregister           Remove the page from denote.deno.dev.
 
 Options:
-  -v, --version      Shows the version number.
-  -h, --help         Shows the help message.
+  -v, --version           Shows the version number.
+  -h, --help              Shows the help message.
 `.trim();
 
 export async function main(cliArgs: string[]) {
@@ -33,8 +30,9 @@ export async function main(cliArgs: string[]) {
     debug,
     force,
     help,
-    output,
+    name,
     port,
+    token,
     version,
     watch,
   } = parseCli(
@@ -48,15 +46,18 @@ export async function main(cliArgs: string[]) {
         "watch",
       ],
       string: [
+        "name",
         "output",
         "port",
+        "token",
       ],
       alias: {
         d: "debug",
         f: "force",
         h: "help",
-        o: "output",
+        n: "name",
         p: "port",
+        t: "token",
         v: "version",
         w: "watch",
       },
@@ -71,24 +72,14 @@ export async function main(cliArgs: string[]) {
     return 0;
   }
 
-  const [subcommand, source] = args;
+  const [subcommand, filename] = args.map((arg) => `${arg}`);
 
   if (subcommand === "init" || subcommand === "i") {
     return await init({
       debug,
       force,
       help,
-      output,
-      name: source,
-    });
-  }
-  if (subcommand === "build" || subcommand === "b") {
-    return await build({
-      debug,
-      force,
-      help,
-      output,
-      source,
+      filename,
     });
   }
   if (subcommand === "serve" || subcommand === "s") {
@@ -96,8 +87,25 @@ export async function main(cliArgs: string[]) {
       debug,
       help,
       port,
-      source,
+      filename,
       watch,
+    });
+  }
+  if (subcommand === "register" || subcommand === "r") {
+    return await register({
+      debug,
+      help,
+      name,
+      token,
+      filename,
+    });
+  }
+  if (subcommand === "unregister" || subcommand === "u") {
+    return await unregister({
+      debug,
+      help,
+      name,
+      token,
     });
   }
   if (help) {

@@ -16,9 +16,7 @@ export type ListItem = {
 
 export type ConfigObject = {
   name: string;
-  project: string;
   disable: disableFlag[];
-  title: string;
   description: string;
   image: string;
   favicon: string;

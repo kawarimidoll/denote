@@ -1,13 +1,16 @@
-import { debounce, extname, serve as localhost } from "./../deps.ts";
+import { debounce, extname, parseYaml, serve as localhost } from "./../deps.ts";
 import { renderHtml } from "./../render_html.ts";
+import { ConfigObject } from "./../types.ts";
 
 const usage = `
-denote serve <source>
+denote serve <filename>
 
   Runs local server without creating any files.
 
 Example:
   denote serve ./denote.yml
+
+  The input should be YAML or JSON file.
 
 Options:
   -p, --port <port:number>  Specifies the port to local server. Default is 8080.
@@ -23,13 +26,13 @@ export async function serve({
   debug,
   help,
   port,
-  source,
+  filename,
   watch,
 }: {
   debug: boolean;
   help: string;
   port: string;
-  source: string | number;
+  filename: string;
   watch: boolean;
 }) {
   if (debug) {
@@ -37,7 +40,7 @@ export async function serve({
       debug,
       help,
       port,
-      source,
+      filename,
       watch,
     });
   }
@@ -47,17 +50,14 @@ export async function serve({
     return 0;
   }
 
-  if (!source) {
+  if (!filename) {
     console.log(usage);
     error("source file is required");
     return 1;
   }
-  if (
-    typeof source !== "string" ||
-    ![".yaml", ".yml", ".json"].includes(extname(source))
-  ) {
+  if (![".yaml", ".yml", ".json"].includes(extname(filename))) {
     console.log(usage);
-    error("invalid source file is passed");
+    error("invalid file is passed as an argument");
     return 1;
   }
   if (!/^[1-9]\d*$/.test(port)) {
@@ -67,9 +67,9 @@ export async function serve({
   }
 
   if (watch) {
-    await runServerWithWatching(source, Number(port), { debug });
+    await runServerWithWatching(filename, Number(port), { debug });
   } else {
-    await runServer(source, Number(port), { debug });
+    await runServer(filename, Number(port), { debug });
   }
   return 0;
 }
@@ -80,7 +80,8 @@ async function runServer(
   port: number,
   { debug = false } = {},
 ) {
-  html = renderHtml(source, debug);
+  const config = parseYaml(Deno.readTextFileSync(source)) as ConfigObject;
+  html = renderHtml(config, debug);
   const server = localhost({ port });
   console.log(
     `HTTP webserver running. Access it at: http://localhost:${port}/`,
@@ -105,7 +106,8 @@ export async function runServerWithWatching(
   const rebuild = debounce(() => {
     console.log("File change detected");
     console.log("Rebuilding...");
-    html = renderHtml(source, debug);
+    const config = parseYaml(Deno.readTextFileSync(source)) as ConfigObject;
+    html = renderHtml(config, debug);
     console.log("Local server is updated");
     console.log("Watching for changes...");
   }, interval);
