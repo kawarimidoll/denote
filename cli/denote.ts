@@ -22,6 +22,7 @@ Subcommands:
 Options:
   -v, --version           Shows the version number.
   -h, --help              Shows the help message.
+  -d, --debug             Reveals the given arguments.
 `.trim();
 
 export async function main(cliArgs: string[]) {

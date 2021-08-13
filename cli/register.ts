@@ -84,7 +84,6 @@ export async function register({
     error("name and token are both required");
     return 1;
   }
-  console.log({ name, token });
 
   try {
     const contents = isURL(filename)
