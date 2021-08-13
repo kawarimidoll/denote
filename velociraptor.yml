@@ -30,7 +30,7 @@ scripts:
       - read
 
   start:
-    cmd: deployctl run --no-check --env=.env --watch ./sift.ts
+    cmd: deployctl run --no-check --env=.env --watch ./server.ts
 
   deps:
     desc: Update dependencies with ensuring pass tests
