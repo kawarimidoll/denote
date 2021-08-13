@@ -60,7 +60,7 @@ export async function init({
   let config = "";
   try {
     const response = await fetch(
-      "https://raw.githubusercontent.com/kawarimidoll/denote/saas/example.yml",
+      "https://raw.githubusercontent.com/kawarimidoll/denote/main/example.yml",
     );
     config = await response.text();
 

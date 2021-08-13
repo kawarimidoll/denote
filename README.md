@@ -13,7 +13,6 @@
 <!-- <a href="https://nest.land/package/denote"><img alt="nest badge" src="https://nest.land/badge.svg"></a> -->
 </p>
 
-
 A minimal page generator for Deno Deploy that _denotes_ you
 
 [Demo](https://denote.deno.dev/denote)
