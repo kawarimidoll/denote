@@ -1,7 +1,7 @@
 export type CssObject = Record<string, Record<string, unknown>>;
 
 // TODO: use disableFlags
-export type disableFlag = "rain" | "nav" | "rounded-image";
+export type DisableFlag = "rain" | "nav" | "rounded-image";
 
 export type ListGroup = {
   icon: string;
@@ -9,14 +9,14 @@ export type ListGroup = {
 };
 
 export type ListItem = {
-  text: string;
-  icon: string;
-  link: string;
+  text?: string;
+  icon?: string;
+  link?: string;
 };
 
 export type ConfigObject = {
   name: string;
-  disable: disableFlag[];
+  disable: DisableFlag[];
   description: string;
   image: string;
   favicon: string;
