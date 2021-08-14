@@ -69,8 +69,6 @@ sift({
       return json({ message: "could not process the data." }, { status: 400 });
     }
 
-    console.log(JSON.stringify(body));
-
     if (request.method === "GET") {
       return json({
         message:
@@ -158,7 +156,7 @@ sift({
 
     try {
       const rawConfig = decodeConfig(item.config);
-      rawConfig.name = name;
+      rawConfig.name ||= name;
       console.log({ rawConfig });
       const html = renderHtml(rawConfig, true);
       return new Response(html, { headers: { "content-type": "text/html" } });
