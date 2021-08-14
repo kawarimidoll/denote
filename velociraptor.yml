@@ -1,3 +1,5 @@
+noCheck: true
+
 scripts:
   init:
     desc: Builds config file
@@ -6,7 +8,6 @@ scripts:
       - write
       - read
       - net
-    noCheck: true
 
   serve:
     desc: Starts local server
@@ -15,7 +16,6 @@ scripts:
       - net
       - read
     watch: true
-    noCheck: true
 
   register:
     desc: Publishes page
@@ -23,7 +23,6 @@ scripts:
     allow:
       - net
       - read
-    noCheck: true
 
   unregister:
     desc: Removes page
@@ -31,7 +30,6 @@ scripts:
     allow:
       - net
       - read
-    noCheck: true
 
   start:
     cmd: deployctl run --no-check --env=.env --watch ./server.ts
@@ -42,11 +40,11 @@ scripts:
 
   lint:
     desc: Runs lint
-    cmd: deno lint --ignore=cov_profile,denote_server.js
+    cmd: deno lint --ignore=cov_profile
 
   fmt:
     desc: Runs format
-    cmd: deno fmt --ignore=cov_profile,denote_server.js
+    cmd: deno fmt --ignore=cov_profile
 
   pre-commit:
     cmd: |
