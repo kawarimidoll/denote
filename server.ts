@@ -12,19 +12,22 @@ import { renderHtml } from "./render_html.ts";
 import { ConfigObject } from "./types.ts";
 import { deleteItem, getItem, putItem } from "./dynamodb.ts";
 
-function applyHash(token: string) {
+export function applyHash(token: string) {
   return createHash("sha256").update(`${token}`).toString();
 }
 
-const NAME_REGEX = /[a-z][a-z0-9_-]{2,64}/;
-const TOKEN_REGEX = /[!-~]{8,128}/;
-function validateName(name: string) {
+const NAME_REGEX = /^[a-z][a-z0-9_-]{2,64}$/;
+const TOKEN_REGEX = /^[!-~]{8,128}$/;
+
+export function validateName(name: string) {
   return NAME_REGEX.test(name);
 }
-function validateToken(token: string) {
+
+export function validateToken(token: string) {
   return TOKEN_REGEX.test(token);
 }
-function validateConfig(config: string) {
+
+export function validateConfig(config: string) {
   try {
     const { list } = JSON.parse(config);
     return !!(list);
@@ -32,7 +35,7 @@ function validateConfig(config: string) {
     return false;
   }
 }
-function encodeConfig(rawConfig: string) {
+export function encodeConfig(rawConfig: string) {
   // use parse and stringify to minify json
   return encode(
     gzip(
@@ -42,7 +45,7 @@ function encodeConfig(rawConfig: string) {
     ),
   );
 }
-function decodeConfig(compressedConfig: string) {
+export function decodeConfig(compressedConfig: string) {
   return JSON.parse(
     new TextDecoder().decode(gunzip(decode(compressedConfig))),
   ) as ConfigObject;
