@@ -5,11 +5,12 @@ import {
   PutItemCommand,
 } from "./deps.ts";
 
-const accessKeyId = Deno.env.get("AWS_ACCESS_KEY_ID");
-const secretAccessKey = Deno.env.get("AWS_SECRET_ACCESS_KEY");
-if (!accessKeyId || !secretAccessKey) {
-  throw new Error("missing credentials");
+const accessKeyId = Deno.env.get("AWS_ACCESS_KEY_ID") || "dummy-id";
+const secretAccessKey = Deno.env.get("AWS_SECRET_ACCESS_KEY") || "dummy-key";
+if (accessKeyId === "dummy-id" || secretAccessKey === "dummy-key") {
+  console.warn("missing credentials. starts with dummy values.");
 }
+
 const client = new DynamoDBClient({
   region: "us-east-1",
   credentials: { accessKeyId, secretAccessKey },
