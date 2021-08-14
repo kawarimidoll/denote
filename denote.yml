@@ -40,7 +40,7 @@ list:
         text: Hosting on Deno Deploy
         link: https://deno.com/deploy
       - icon: entypo/github
-        text: More useful with GitHub Actions
+        text: Auto-update by GitHub Actions
         link: https://github.com/kawarimidoll/denote/blob/main/.github/workflows/cicd.yml
       - icon: entypo/folder-images
         text: Icons by icongr.am

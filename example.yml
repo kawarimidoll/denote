@@ -24,7 +24,7 @@
 
 list:
   #   The list of the group of the contents.
-  #   This values is required.
+  #   These values are required.
 
   id-1:
     #   The key of the group is used as the ID of html elements.
