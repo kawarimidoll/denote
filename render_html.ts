@@ -83,10 +83,11 @@ export function renderListItem(listItem: ListItem) {
 const rainCount = 30;
 
 export function renderHtmlHead(config: ConfigObject) {
-  const { name, description, image, favicon, twitter } = config;
+  const { name, description, disable, image, favicon, twitter } = config;
   const url = `https://denote.deno.dev/${name}`;
   const viewport = "width=device-width,initial-scale=1.0";
   const title = `${name} | Denote`;
+  const noRound = disable.includes("rounded-image");
 
   return h(
     "head",
@@ -103,28 +104,33 @@ export function renderHtmlHead(config: ConfigObject) {
     h("meta", { name: "twitter:card", content: "summary" }),
     twitter ? h("meta", { name: "twitter:site", content: twitter }) : "",
     h("title", title),
-    h("style", getDenoteCss(rainCount)),
+    h("style", getDenoteCss(rainCount, noRound)),
     h("link", { rel: "icon", href: favicon }),
     h("link", { rel: "canonical", href: url }),
   );
 }
 
 export function renderHtmlBody(config: ConfigObject) {
-  const { name, description, image } = config;
+  const { name, description, disable, image } = config;
   const list = Object.entries(config.list);
   const alt = `${name} main image`;
+  const noNav = disable.includes("nav");
+  const noRain = disable.includes("rain");
 
   return h(
     "body",
-    h("div", { class: "rain" }, h("div", { class: "drop" }).repeat(rainCount)),
+    noRain ? "" : h(
+      "div",
+      { class: "rain" },
+      h("div", { class: "drop" }).repeat(rainCount),
+    ),
     h(
       "div",
       { id: "main" },
       image ? h("img", { alt, class: "main-image", src: image }) : "",
       h("h1", name),
       description ? h("div", { class: "description" }, description) : "",
-      h("div", "Click to jump..."),
-      h(
+      noNav ? "" : h("div", "Click to jump...") + h(
         "div",
         { class: "nav-box" },
         h(

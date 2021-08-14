@@ -13,7 +13,7 @@ export function getRandomInt(max: number) {
   return Math.floor(Math.random() * max);
 }
 
-export function getDenoteCss(rainCount: number) {
+export function getDenoteCss(rainCount: number, noRound = false) {
   const cssYml = `
 body:
   display: flex
@@ -34,12 +34,14 @@ footer:
 img:
   display: block
   margin: 0 auto
+.inline:
+  display: inline
 "#main":
   width: 100%
   max-width: 800px
   padding: 1rem 0.5rem
 .main-image:
-  border-radius: 50%
+  ${noRound ? "" : "border-radius: 50%"}
   width: 260px
   height: 260px
   object-fit: cover
