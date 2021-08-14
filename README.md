@@ -37,9 +37,9 @@ $ denote unregister --name your-name --token your-token
 ```
 
 - `name`: The name of your page (`https://denote.deno.dev/[name]`). This must be
-  unique in Denote and matched with `/[a-z][a-z0-9_-]{2,64}/`.
+  unique in Denote and matched with `/^[a-z][a-z0-9_-]{2,64}$/`.
 - `token`: The secret token. This is hashed and saved. This must matched with
-  `/[!-~]{8,128}/`.
+  `/^[!-~]{8,128}$/`.
 
 ## API
 
