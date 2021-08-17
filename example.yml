@@ -46,6 +46,7 @@ list:
         link: https://github.com
       - text: this is a link to Twitter
         link: https://twitter.com
+      - link: https://gitlab.com
 
   id-2:
     icon: feather/anchor

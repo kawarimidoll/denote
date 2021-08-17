@@ -76,7 +76,7 @@ export function renderListItem(listItem: ListItem) {
     );
 
   return href
-    ? h("a", { href }, iconText(icon, text + exLink))
+    ? h("a", { href }, iconText(icon, (text || href) + exLink))
     : iconText(icon, text);
 }
 
