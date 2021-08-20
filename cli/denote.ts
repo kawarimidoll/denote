@@ -1,4 +1,4 @@
-import { parseCli } from "./../deps.ts";
+import { parseCli, semverLessThan } from "./../deps.ts";
 import { init } from "./init.ts";
 import { serve } from "./serve.ts";
 import { register } from "./register.ts";
@@ -6,6 +6,7 @@ import { unregister } from "./unregister.ts";
 
 const NAME = "denote";
 const VERSION = "0.1.0";
+const MINIMUM_DENO_VERSION = "1.13.0";
 const versionInfo = `${NAME} ${VERSION}`;
 
 const helpMsg = `
@@ -26,6 +27,13 @@ Options:
 `.trim();
 
 export async function main(cliArgs: string[]) {
+  if (semverLessThan(Deno.version.deno, MINIMUM_DENO_VERSION)) {
+    console.error("The Deno version you are using is too old.");
+    console.error(`Please update to Deno ${MINIMUM_DENO_VERSION} or later.`);
+    console.error("To do this run `deno upgrade`.");
+    return 1;
+  }
+
   const {
     "_": args,
     debug,

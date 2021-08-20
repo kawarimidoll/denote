@@ -22,6 +22,7 @@ export {
   serve as sift,
   validateRequest,
 } from "https://deno.land/x/sift@0.3.5/mod.ts";
+export { lt as semverLessThan } from "https://deno.land/x/semver@v1.4.0/mod.ts";
 export { gunzip, gzip } from "https://deno.land/x/compress@v0.3.8/gzip/gzip.ts";
 export {
   AMP,
