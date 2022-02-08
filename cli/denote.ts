@@ -5,7 +5,7 @@ import { register } from "./register.ts";
 import { unregister } from "./unregister.ts";
 
 const NAME = "denote";
-const VERSION = "0.2.0";
+const VERSION = "0.2.1";
 const MINIMUM_DENO_VERSION = "1.13.0";
 const versionInfo = `${NAME} ${VERSION}`;
 
