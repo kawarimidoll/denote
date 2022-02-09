@@ -33,7 +33,7 @@ export {
 } from "https://deno.land/x/markup_tag@0.3.0/mod.ts";
 import shuffle from "https://deno.land/x/shuffle@v1.0.1/mod.ts";
 export { shuffle };
-export { range } from "https://deno.land/x/it_range@v1.1.0/mod.ts";
+export { range } from "https://deno.land/x/it_range@v1.0.3/range.mjs";
 
 export {
   DeleteItemCommand,
