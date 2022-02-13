@@ -13,7 +13,7 @@ jobs:
       - name: Update dependencies
         run: >
           deno run -A https://deno.land/x/udd/main.ts
-          $(find . -name "*.ts") --test="vr test"
+          $(find . -name "*.ts") --test="deno test -Ar --no-check=remote"
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:

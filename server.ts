@@ -144,7 +144,7 @@ sift({
     }
     return json({ message: "something went wrong." }, { status: 500 });
   },
-  "/:slug": async (_, params) => {
+  "/:slug": async (_, params = { slug: "" }) => {
     const name = Array.isArray(params.slug) ? params.slug[0] : params.slug;
     console.log(name);
 
