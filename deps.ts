@@ -2,20 +2,20 @@ export {
   assert,
   assertEquals,
   assertThrows,
-} from "https://deno.land/std@0.127.0/testing/asserts.ts";
+} from "https://deno.land/std@0.128.0/testing/asserts.ts";
 export {
   decode,
   encode,
-} from "https://deno.land/std@0.127.0/encoding/base64.ts";
+} from "https://deno.land/std@0.128.0/encoding/base64.ts";
 export {
   parse as parseYaml,
   stringify as stringifyYaml,
-} from "https://deno.land/std@0.127.0/encoding/yaml.ts";
-export { createHash } from "https://deno.land/std@0.127.0/hash/mod.ts";
-export { basename, extname } from "https://deno.land/std@0.127.0/path/mod.ts";
-export { debounce } from "https://deno.land/std@0.127.0/async/mod.ts";
-export { parse as parseCli } from "https://deno.land/std@0.127.0/flags/mod.ts";
-export { mapValues } from "https://deno.land/std@0.127.0/collections/mod.ts";
+} from "https://deno.land/std@0.128.0/encoding/yaml.ts";
+export { createHash } from "https://deno.land/std@0.128.0/hash/mod.ts";
+export { basename, extname } from "https://deno.land/std@0.128.0/path/mod.ts";
+export { debounce } from "https://deno.land/std@0.128.0/async/mod.ts";
+export { parse as parseCli } from "https://deno.land/std@0.128.0/flags/mod.ts";
+export { mapValues } from "https://deno.land/std@0.128.0/collections/mod.ts";
 
 export {
   json,
