@@ -2,20 +2,20 @@ export {
   assert,
   assertEquals,
   assertThrows,
-} from "https://deno.land/std@0.128.0/testing/asserts.ts";
+} from "https://deno.land/std@0.130.0/testing/asserts.ts";
 export {
   decode,
   encode,
-} from "https://deno.land/std@0.128.0/encoding/base64.ts";
+} from "https://deno.land/std@0.130.0/encoding/base64.ts";
 export {
   parse as parseYaml,
   stringify as stringifyYaml,
-} from "https://deno.land/std@0.128.0/encoding/yaml.ts";
-export { createHash } from "https://deno.land/std@0.128.0/hash/mod.ts";
-export { basename, extname } from "https://deno.land/std@0.128.0/path/mod.ts";
-export { debounce } from "https://deno.land/std@0.128.0/async/mod.ts";
-export { parse as parseCli } from "https://deno.land/std@0.128.0/flags/mod.ts";
-export { mapValues } from "https://deno.land/std@0.128.0/collections/mod.ts";
+} from "https://deno.land/std@0.130.0/encoding/yaml.ts";
+export { createHash } from "https://deno.land/std@0.130.0/hash/mod.ts";
+export { basename, extname } from "https://deno.land/std@0.130.0/path/mod.ts";
+export { debounce } from "https://deno.land/std@0.130.0/async/mod.ts";
+export { parse as parseCli } from "https://deno.land/std@0.130.0/flags/mod.ts";
+export { mapValues } from "https://deno.land/std@0.130.0/collections/mod.ts";
 
 export {
   json,
@@ -23,7 +23,7 @@ export {
   validateRequest,
 } from "https://deno.land/x/sift@0.4.3/mod.ts";
 export { lt as semverLessThan } from "https://deno.land/x/semver@v1.4.0/mod.ts";
-export { gunzip, gzip } from "https://deno.land/x/compress@v0.4.1/gzip/gzip.ts";
+export { gunzip, gzip } from "https://deno.land/x/compress@v0.4.5/gzip/gzip.ts";
 export {
   AMP,
   GT,
