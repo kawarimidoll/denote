@@ -144,8 +144,10 @@ sift({
     }
     return json({ message: "something went wrong." }, { status: 500 });
   },
-  "/:slug": async (_, params = { slug: "" }) => {
-    const name = Array.isArray(params.slug) ? params.slug[0] : params.slug;
+  "/:slug": async (request) => {
+    const { pathname } = new URL(request.url);
+    // /aaa/bbb/ccc -> aaa
+    const name = pathname.slice(1).replace(/\/.*/, "");
     console.log(name);
 
     const item = await getItem(name);
